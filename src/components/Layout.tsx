@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Navigation from './Navigation';
 
 interface LayoutProps {
@@ -51,6 +52,12 @@ const Layout = ({ children }: LayoutProps) => {
             <p className="text-sm opacity-75">
               © 2024 Het Witte Bolletje. Alle rechten voorbehouden.
             </p>
+            <Link 
+              to="/admin" 
+              className="text-xs opacity-50 hover:opacity-75 transition-opacity mt-2 inline-block"
+            >
+              Admin
+            </Link>
           </div>
         </div>
       </footer>

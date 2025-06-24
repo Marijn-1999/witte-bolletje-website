@@ -8,6 +8,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Assortiment from "./pages/Assortiment";
 import Contact from "./pages/Contact";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

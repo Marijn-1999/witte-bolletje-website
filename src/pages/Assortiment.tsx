@@ -1,87 +1,150 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Assortiment = () => {
-  const products = {
-    brood: [
-      {
-        name: "Wit Brood",
-        description: "Ons klassieke witte brood, luchtig en zacht. Perfect voor de boterham.",
-        price: "€2,50",
-        image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      },
-      {
-        name: "Volkoren Brood",
-        description: "Gezond volkorenbrood vol vezels en voedingsstoffen.",
-        price: "€3,20",
-        image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      },
-      {
-        name: "Tijgerbrood",
-        description: "Knapperig brood met een unieke rijstkorst.",
-        price: "€3,50",
-        image: "https://images.unsplash.com/photo-1568254183919-78a4f43a2877?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      },
-      {
-        name: "Boerenbrood",
-        description: "Stevig brood op zuurdesem basis, perfect voor hartige beleggen.",
-        price: "€4,00",
-        image: "https://images.unsplash.com/photo-1534620808146-d33bb39128b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      }
-    ],
-    taarten: [
-      {
-        name: "Slagroomtaart",
-        description: "Klassieke slagroomtaart met verse vruchten en luchtige slagroom.",
-        price: "vanaf €15,00",
-        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      },
-      {
-        name: "Chocoladetaart",
-        description: "Rijke chocoladetaart met pure chocolade ganache.",
-        price: "vanaf €18,00",
-        image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      },
-      {
-        name: "Verjaardag Taart",
-        description: "Op maat gemaakte verjaardagstaarten in elke gewenste vorm.",
-        price: "vanaf €25,00",
-        image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      },
-      {
-        name: "Appeltaart",
-        description: "Traditionele Nederlandse appeltaart met kaneel en rozijnen.",
-        price: "€12,50",
-        image: "https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      }
-    ],
-    gebak: [
-      {
-        name: "Croissants",
-        description: "Boterrijke, knapperige croissants - perfect voor het ontbijt.",
-        price: "€2,00",
-        image: "https://images.unsplash.com/photo-1555507036-ab794f575c39?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      },
-      {
-        name: "Koekjes Assortiment",
-        description: "Diverse huisgemaakte koekjes, dagelijks wisselend assortiment.",
-        price: "€1,50 p/st",
-        image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      },
-      {
-        name: "Gevulde Koeken",
-        description: "Traditionele gevulde koeken met amandelspijs.",
-        price: "€2,50",
-        image: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      },
-      {
-        name: "Chocolade Eclairs",
-        description: "Luchtige eclairs gevuld met custard en bedekt met chocolade.",
-        price: "€3,00",
-        image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-      }
-    ]
+  const [products, setProducts] = useState<any>({
+    brood: [],
+    taarten: [],
+    gebak: []
+  });
+
+  useEffect(() => {
+    // Load products from localStorage or use defaults
+    const savedProducts = localStorage.getItem('bakery-products');
+    if (savedProducts) {
+      const allProducts = JSON.parse(savedProducts);
+      const groupedProducts = allProducts.reduce((acc: any, product: any) => {
+        if (!acc[product.category]) {
+          acc[product.category] = [];
+        }
+        acc[product.category].push({
+          name: product.name,
+          description: getProductDescription(product.name),
+          price: `€${product.price}`,
+          image: getProductImage(product.name)
+        });
+        return acc;
+      }, {});
+      setProducts(groupedProducts);
+    } else {
+      // Use default products if none saved
+      setProducts({
+        brood: [
+          {
+            name: "Wit Brood",
+            description: "Ons klassieke witte brood, luchtig en zacht. Perfect voor de boterham.",
+            price: "€2,50",
+            image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          },
+          {
+            name: "Volkoren Brood",
+            description: "Gezond volkorenbrood vol vezels en voedingsstoffen.",
+            price: "€3,20",
+            image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          },
+          {
+            name: "Tijgerbrood",
+            description: "Knapperig brood met een unieke rijstkorst.",
+            price: "€3,50",
+            image: "https://images.unsplash.com/photo-1568254183919-78a4f43a2877?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          },
+          {
+            name: "Boerenbrood",
+            description: "Stevig brood op zuurdesem basis, perfect voor hartige beleggen.",
+            price: "€4,00",
+            image: "https://images.unsplash.com/photo-1534620808146-d33bb39128b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          }
+        ],
+        taarten: [
+          {
+            name: "Slagroomtaart",
+            description: "Klassieke slagroomtaart met verse vruchten en luchtige slagroom.",
+            price: "vanaf €15,00",
+            image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          },
+          {
+            name: "Chocoladetaart",
+            description: "Rijke chocoladetaart met pure chocolade ganache.",
+            price: "vanaf €18,00",
+            image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          },
+          {
+            name: "Verjaardag Taart",
+            description: "Op maat gemaakte verjaardagstaarten in elke gewenste vorm.",
+            price: "vanaf €25,00",
+            image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          },
+          {
+            name: "Appeltaart",
+            description: "Traditionele Nederlandse appeltaart met kaneel en rozijnen.",
+            price: "€12,50",
+            image: "https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          }
+        ],
+        gebak: [
+          {
+            name: "Croissants",
+            description: "Boterrijke, knapperige croissants - perfect voor het ontbijt.",
+            price: "€2,00",
+            image: "https://images.unsplash.com/photo-1555507036-ab794f575c39?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          },
+          {
+            name: "Koekjes Assortiment",
+            description: "Diverse huisgemaakte koekjes, dagelijks wisselend assortiment.",
+            price: "€1,50 p/st",
+            image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          },
+          {
+            name: "Gevulde Koeken",
+            description: "Traditionele gevulde koeken met amandelspijs.",
+            price: "€2,50",
+            image: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          },
+          {
+            name: "Chocolade Eclairs",
+            description: "Luchtige eclairs gevuld met custard en bedekt met chocolade.",
+            price: "€3,00",
+            image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          }
+        ]
+      });
+    }
+  }, []);
+
+  const getProductDescription = (name: string) => {
+    const descriptions: Record<string, string> = {
+      "Wit Brood": "Ons klassieke witte brood, luchtig en zacht. Perfect voor de boterham.",
+      "Volkoren Brood": "Gezond volkorenbrood vol vezels en voedingsstoffen.",
+      "Tijgerbrood": "Knapperig brood met een unieke rijstkorst.",
+      "Boerenbrood": "Stevig brood op zuurdesem basis, perfect voor hartige beleggen.",
+      "Slagroomtaart": "Klassieke slagroomtaart met verse vruchten en luchtige slagroom.",
+      "Chocoladetaart": "Rijke chocoladetaart met pure chocolade ganache.",
+      "Verjaardag Taart": "Op maat gemaakte verjaardagstaarten in elke gewenste vorm.",
+      "Appeltaart": "Traditionele Nederlandse appeltaart met kaneel en rozijnen.",
+      "Croissants": "Boterrijke, knapperige croissants - perfect voor het ontbijt.",
+      "Koekjes Assortiment": "Diverse huisgemaakte koekjes, dagelijks wisselend assortiment.",
+      "Gevulde Koeken": "Traditionele gevulde koeken met amandelspijs.",
+      "Chocolade Eclairs": "Luchtige eclairs gevuld met custard en bedekt met chocolade."
+    };
+    return descriptions[name] || "Heerlijk huisgemaakt product.";
+  };
+
+  const getProductImage = (name: string) => {
+    const images: Record<string, string> = {
+      "Wit Brood": "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Volkoren Brood": "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Tijgerbrood": "https://images.unsplash.com/photo-1568254183919-78a4f43a2877?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Boerenbrood": "https://images.unsplash.com/photo-1534620808146-d33bb39128b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Slagroomtaart": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Chocoladetaart": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Verjaardag Taart": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Appeltaart": "https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Croissants": "https://images.unsplash.com/photo-1555507036-ab794f575c39?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Koekjes Assortiment": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Gevulde Koeken": "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "Chocolade Eclairs": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    };
+    return images[name] || "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
   };
 
   const ProductCard = ({ product }: { product: { name: string; description: string; price: string; image: string } }) => (
@@ -127,12 +190,11 @@ const Assortiment = () => {
         <section className="mb-20">
           <div className="flex items-center justify-center mb-12">
             <div className="text-center">
-              <div className="text-6xl mb-4">🍞</div>
               <h2 className="text-4xl font-bold text-bakery-brown">Brood</h2>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.brood.map((product, index) => (
+            {products.brood?.map((product: any, index: number) => (
               <ProductCard key={index} product={product} />
             ))}
           </div>
@@ -142,12 +204,11 @@ const Assortiment = () => {
         <section className="mb-20">
           <div className="flex items-center justify-center mb-12">
             <div className="text-center">
-              <div className="text-6xl mb-4">🎂</div>
               <h2 className="text-4xl font-bold text-bakery-brown">Taarten</h2>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.taarten.map((product, index) => (
+            {products.taarten?.map((product: any, index: number) => (
               <ProductCard key={index} product={product} />
             ))}
           </div>
@@ -157,12 +218,11 @@ const Assortiment = () => {
         <section className="mb-20">
           <div className="flex items-center justify-center mb-12">
             <div className="text-center">
-              <div className="text-6xl mb-4">🍪</div>
               <h2 className="text-4xl font-bold text-bakery-brown">Gebak & Koekjes</h2>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.gebak.map((product, index) => (
+            {products.gebak?.map((product: any, index: number) => (
               <ProductCard key={index} product={product} />
             ))}
           </div>
