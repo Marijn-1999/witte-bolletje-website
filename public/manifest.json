@@ -1,0 +1,28 @@
+
+{
+  "name": "Het Witte Bolletje - Bakkerij",
+  "short_name": "Het Witte Bolletje",
+  "description": "Verse bakkerij producten sinds 1985",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fef7ed",
+  "theme_color": "#8b4513",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["food", "business", "shopping"],
+  "lang": "nl",
+  "dir": "ltr"
+}
