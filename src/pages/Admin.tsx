@@ -6,10 +6,17 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 
+interface Product {
+  id: number;
+  name: string;
+  price: string;
+  category: string;
+}
+
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
   // Simple password (in real app, this would be handled by backend)
@@ -31,7 +38,7 @@ const Admin = () => {
       setProducts(JSON.parse(savedProducts));
     } else {
       // Default products
-      const defaultProducts = [
+      const defaultProducts: Product[] = [
         { id: 1, name: "Wit Brood", price: "2.50", category: "brood" },
         { id: 2, name: "Volkoren Brood", price: "3.20", category: "brood" },
         { id: 3, name: "Tijgerbrood", price: "3.50", category: "brood" },
@@ -132,7 +139,7 @@ const Admin = () => {
     }
     acc[product.category].push(product);
     return acc;
-  }, {} as Record<string, any[]>);
+  }, {} as Record<string, Product[]>);
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
@@ -173,7 +180,7 @@ const Admin = () => {
 };
 
 const ProductCard = ({ product, onPriceUpdate }: { 
-  product: any; 
+  product: Product; 
   onPriceUpdate: (id: number, price: string) => void;
 }) => {
   const [isEditing, setIsEditing] = useState(false);
