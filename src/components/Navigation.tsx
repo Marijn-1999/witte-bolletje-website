@@ -19,15 +19,12 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="bg-white/95 backdrop-blur-sm shadow-lg sticky top-0 z-50">
+    <nav className="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-modern-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3" onClick={closeMenu}>
-            <div className="w-12 h-12 bg-gradient-to-br from-bakery-gold to-bakery-warm-brown rounded-full flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-xl">🥖</span>
-            </div>
-            <span className="text-2xl font-bold text-bakery-brown">Het Witte Bolletje</span>
+            <span className="text-2xl font-bold text-modern-primary">Het Witte Bolletje</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -37,8 +34,8 @@ const Navigation = () => {
                 to="/"
                 className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 ${
                   isActive('/') 
-                    ? 'text-white bg-bakery-brown shadow-lg' 
-                    : 'text-gray-700 hover:text-bakery-brown hover:bg-bakery-light-cream'
+                    ? 'text-white bg-modern-primary shadow-lg' 
+                    : 'text-modern-text hover:text-modern-primary hover:bg-modern-secondary'
                 }`}
               >
                 Home
@@ -47,8 +44,8 @@ const Navigation = () => {
                 to="/assortiment"
                 className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 ${
                   isActive('/assortiment') 
-                    ? 'text-white bg-bakery-brown shadow-lg' 
-                    : 'text-gray-700 hover:text-bakery-brown hover:bg-bakery-light-cream'
+                    ? 'text-white bg-modern-primary shadow-lg' 
+                    : 'text-modern-text hover:text-modern-primary hover:bg-modern-secondary'
                 }`}
               >
                 Assortiment
@@ -57,8 +54,8 @@ const Navigation = () => {
                 to="/contact"
                 className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 ${
                   isActive('/contact') 
-                    ? 'text-white bg-bakery-brown shadow-lg' 
-                    : 'text-gray-700 hover:text-bakery-brown hover:bg-bakery-light-cream'
+                    ? 'text-white bg-modern-primary shadow-lg' 
+                    : 'text-modern-text hover:text-modern-primary hover:bg-modern-secondary'
                 }`}
               >
                 Contact
@@ -70,7 +67,7 @@ const Navigation = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-700 hover:text-bakery-brown p-2 rounded-lg transition-colors"
+              className="text-modern-text hover:text-modern-primary p-2 rounded-lg transition-colors"
               aria-label="Toggle menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center items-center">
@@ -84,14 +81,14 @@ const Navigation = () => {
 
         {/* Mobile Navigation Menu */}
         <div className={`md:hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-64 opacity-100 pb-4' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-          <div className="px-2 pt-2 pb-3 space-y-2 bg-bakery-light-cream rounded-2xl mt-2">
+          <div className="px-2 pt-2 pb-3 space-y-2 bg-modern-secondary rounded-2xl mt-2">
             <Link
               to="/"
               onClick={closeMenu}
               className={`block px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${
                 isActive('/') 
-                  ? 'text-white bg-bakery-brown shadow-lg' 
-                  : 'text-gray-700 hover:text-bakery-brown hover:bg-white'
+                  ? 'text-white bg-modern-primary shadow-lg' 
+                  : 'text-modern-text hover:text-modern-primary hover:bg-white'
               }`}
             >
               Home
@@ -101,8 +98,8 @@ const Navigation = () => {
               onClick={closeMenu}
               className={`block px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${
                 isActive('/assortiment') 
-                  ? 'text-white bg-bakery-brown shadow-lg' 
-                  : 'text-gray-700 hover:text-bakery-brown hover:bg-white'
+                  ? 'text-white bg-modern-primary shadow-lg' 
+                  : 'text-modern-text hover:text-modern-primary hover:bg-white'
               }`}
             >
               Assortiment
@@ -112,8 +109,8 @@ const Navigation = () => {
               onClick={closeMenu}
               className={`block px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${
                 isActive('/contact') 
-                  ? 'text-white bg-bakery-brown shadow-lg' 
-                  : 'text-gray-700 hover:text-bakery-brown hover:bg-white'
+                  ? 'text-white bg-modern-primary shadow-lg' 
+                  : 'text-modern-text hover:text-modern-primary hover:bg-white'
               }`}
             >
               Contact
