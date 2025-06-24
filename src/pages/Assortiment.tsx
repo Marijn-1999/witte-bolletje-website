@@ -1,19 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+interface Product {
+  id: number;
+  name: string;
+  price: string;
+  category: string;
+}
+
 const Assortiment = () => {
-  const [products, setProducts] = useState<any>({
+  const [products, setProducts] = useState<{
+    brood: any[];
+    taarten: any[];
+    gebak: any[];
+  }>({
     brood: [],
     taarten: [],
     gebak: []
   });
 
   useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const loadProducts = () => {
     // Load products from localStorage or use defaults
     const savedProducts = localStorage.getItem('bakery-products');
     if (savedProducts) {
-      const allProducts = JSON.parse(savedProducts);
-      const groupedProducts = allProducts.reduce((acc: any, product: any) => {
+      const allProducts: Product[] = JSON.parse(savedProducts);
+      const groupedProducts = allProducts.reduce((acc: any, product: Product) => {
         if (!acc[product.category]) {
           acc[product.category] = [];
         }
@@ -28,88 +43,39 @@ const Assortiment = () => {
       setProducts(groupedProducts);
     } else {
       // Use default products if none saved
-      setProducts({
-        brood: [
-          {
-            name: "Wit Brood",
-            description: "Ons klassieke witte brood, luchtig en zacht. Perfect voor de boterham.",
-            price: "€2,50",
-            image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          },
-          {
-            name: "Volkoren Brood",
-            description: "Gezond volkorenbrood vol vezels en voedingsstoffen.",
-            price: "€3,20",
-            image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          },
-          {
-            name: "Tijgerbrood",
-            description: "Knapperig brood met een unieke rijstkorst.",
-            price: "€3,50",
-            image: "https://images.unsplash.com/photo-1568254183919-78a4f43a2877?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          },
-          {
-            name: "Boerenbrood",
-            description: "Stevig brood op zuurdesem basis, perfect voor hartige beleggen.",
-            price: "€4,00",
-            image: "https://images.unsplash.com/photo-1534620808146-d33bb39128b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          }
-        ],
-        taarten: [
-          {
-            name: "Slagroomtaart",
-            description: "Klassieke slagroomtaart met verse vruchten en luchtige slagroom.",
-            price: "vanaf €15,00",
-            image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          },
-          {
-            name: "Chocoladetaart",
-            description: "Rijke chocoladetaart met pure chocolade ganache.",
-            price: "vanaf €18,00",
-            image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          },
-          {
-            name: "Verjaardag Taart",
-            description: "Op maat gemaakte verjaardagstaarten in elke gewenste vorm.",
-            price: "vanaf €25,00",
-            image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          },
-          {
-            name: "Appeltaart",
-            description: "Traditionele Nederlandse appeltaart met kaneel en rozijnen.",
-            price: "€12,50",
-            image: "https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          }
-        ],
-        gebak: [
-          {
-            name: "Croissants",
-            description: "Boterrijke, knapperige croissants - perfect voor het ontbijt.",
-            price: "€2,00",
-            image: "https://images.unsplash.com/photo-1555507036-ab794f575c39?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          },
-          {
-            name: "Koekjes Assortiment",
-            description: "Diverse huisgemaakte koekjes, dagelijks wisselend assortiment.",
-            price: "€1,50 p/st",
-            image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          },
-          {
-            name: "Gevulde Koeken",
-            description: "Traditionele gevulde koeken met amandelspijs.",
-            price: "€2,50",
-            image: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          },
-          {
-            name: "Chocolade Eclairs",
-            description: "Luchtige eclairs gevuld met custard en bedekt met chocolade.",
-            price: "€3,00",
-            image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-          }
-        ]
-      });
+      const defaultProducts: Product[] = [
+        { id: 1, name: "Wit Brood", price: "2.50", category: "brood" },
+        { id: 2, name: "Volkoren Brood", price: "3.20", category: "brood" },
+        { id: 3, name: "Tijgerbrood", price: "3.50", category: "brood" },
+        { id: 4, name: "Boerenbrood", price: "4.00", category: "brood" },
+        { id: 5, name: "Slagroomtaart", price: "15.00", category: "taarten" },
+        { id: 6, name: "Chocoladetaart", price: "18.00", category: "taarten" },
+        { id: 7, name: "Verjaardag Taart", price: "25.00", category: "taarten" },
+        { id: 8, name: "Appeltaart", price: "12.50", category: "taarten" },
+        { id: 9, name: "Croissants", price: "2.00", category: "gebak" },
+        { id: 10, name: "Koekjes Assortiment", price: "1.50", category: "gebak" },
+        { id: 11, name: "Gevulde Koeken", price: "2.50", category: "gebak" },
+        { id: 12, name: "Chocolade Eclairs", price: "3.00", category: "gebak" }
+      ];
+      
+      // Save default products to localStorage
+      localStorage.setItem('bakery-products', JSON.stringify(defaultProducts));
+      
+      const groupedProducts = defaultProducts.reduce((acc: any, product: Product) => {
+        if (!acc[product.category]) {
+          acc[product.category] = [];
+        }
+        acc[product.category].push({
+          name: product.name,
+          description: getProductDescription(product.name),
+          price: `€${product.price}`,
+          image: getProductImage(product.name)
+        });
+        return acc;
+      }, {});
+      setProducts(groupedProducts);
     }
-  }, []);
+  };
 
   const getProductDescription = (name: string) => {
     const descriptions: Record<string, string> = {
