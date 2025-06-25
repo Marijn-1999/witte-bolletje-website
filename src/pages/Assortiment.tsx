@@ -1,117 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
-interface Product {
-  id: number;
-  name: string;
-  price: string;
-  category: string;
-}
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useProducts } from '@/hooks/useProducts';
 
 const Assortiment = () => {
-  const [products, setProducts] = useState<{
-    brood: any[];
-    taarten: any[];
-    gebak: any[];
-  }>({
-    brood: [],
-    taarten: [],
-    gebak: []
-  });
+  const { products, loading } = useProducts();
 
-  useEffect(() => {
-    loadProducts();
-  }, []);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-bakery-brown mx-auto"></div>
+          <p className="mt-4 text-gray-600">Producten laden...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const loadProducts = () => {
-    // Load products from localStorage or use defaults
-    const savedProducts = localStorage.getItem('bakery-products');
-    if (savedProducts) {
-      const allProducts: Product[] = JSON.parse(savedProducts);
-      const groupedProducts = allProducts.reduce((acc: any, product: Product) => {
-        if (!acc[product.category]) {
-          acc[product.category] = [];
-        }
-        acc[product.category].push({
-          name: product.name,
-          description: getProductDescription(product.name),
-          price: `€${product.price}`,
-          image: getProductImage(product.name)
-        });
-        return acc;
-      }, {});
-      setProducts(groupedProducts);
-    } else {
-      // Use default products if none saved
-      const defaultProducts: Product[] = [
-        { id: 1, name: "Wit Brood", price: "2.50", category: "brood" },
-        { id: 2, name: "Volkoren Brood", price: "3.20", category: "brood" },
-        { id: 3, name: "Tijgerbrood", price: "3.50", category: "brood" },
-        { id: 4, name: "Boerenbrood", price: "4.00", category: "brood" },
-        { id: 5, name: "Slagroomtaart", price: "15.00", category: "taarten" },
-        { id: 6, name: "Chocoladetaart", price: "18.00", category: "taarten" },
-        { id: 7, name: "Verjaardag Taart", price: "25.00", category: "taarten" },
-        { id: 8, name: "Appeltaart", price: "12.50", category: "taarten" },
-        { id: 9, name: "Croissants", price: "2.00", category: "gebak" },
-        { id: 10, name: "Koekjes Assortiment", price: "1.50", category: "gebak" },
-        { id: 11, name: "Gevulde Koeken", price: "2.50", category: "gebak" },
-        { id: 12, name: "Chocolade Eclairs", price: "3.00", category: "gebak" }
-      ];
-      
-      // Save default products to localStorage
-      localStorage.setItem('bakery-products', JSON.stringify(defaultProducts));
-      
-      const groupedProducts = defaultProducts.reduce((acc: any, product: Product) => {
-        if (!acc[product.category]) {
-          acc[product.category] = [];
-        }
-        acc[product.category].push({
-          name: product.name,
-          description: getProductDescription(product.name),
-          price: `€${product.price}`,
-          image: getProductImage(product.name)
-        });
-        return acc;
-      }, {});
-      setProducts(groupedProducts);
+  const groupedProducts = products.reduce((acc, product) => {
+    if (!acc[product.category]) {
+      acc[product.category] = [];
     }
-  };
-
-  const getProductDescription = (name: string) => {
-    const descriptions: Record<string, string> = {
-      "Wit Brood": "Ons klassieke witte brood, luchtig en zacht. Perfect voor de boterham.",
-      "Volkoren Brood": "Gezond volkorenbrood vol vezels en voedingsstoffen.",
-      "Tijgerbrood": "Knapperig brood met een unieke rijstkorst.",
-      "Boerenbrood": "Stevig brood op zuurdesem basis, perfect voor hartige beleggen.",
-      "Slagroomtaart": "Klassieke slagroomtaart met verse vruchten en luchtige slagroom.",
-      "Chocoladetaart": "Rijke chocoladetaart met pure chocolade ganache.",
-      "Verjaardag Taart": "Op maat gemaakte verjaardagstaarten in elke gewenste vorm.",
-      "Appeltaart": "Traditionele Nederlandse appeltaart met kaneel en rozijnen.",
-      "Croissants": "Boterrijke, knapperige croissants - perfect voor het ontbijt.",
-      "Koekjes Assortiment": "Diverse huisgemaakte koekjes, dagelijks wisselend assortiment.",
-      "Gevulde Koeken": "Traditionele gevulde koeken met amandelspijs.",
-      "Chocolade Eclairs": "Luchtige eclairs gevuld met custard en bedekt met chocolade."
-    };
-    return descriptions[name] || "Heerlijk huisgemaakt product.";
-  };
-
-  const getProductImage = (name: string) => {
-    const images: Record<string, string> = {
-      "Wit Brood": "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Volkoren Brood": "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Tijgerbrood": "https://images.unsplash.com/photo-1568254183919-78a4f43a2877?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Boerenbrood": "https://images.unsplash.com/photo-1534620808146-d33bb39128b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Slagroomtaart": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Chocoladetaart": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Verjaardag Taart": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Appeltaart": "https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Croissants": "https://images.unsplash.com/photo-1555507036-ab794f575c39?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Koekjes Assortiment": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Gevulde Koeken": "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "Chocolade Eclairs": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-    };
-    return images[name] || "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
-  };
+    acc[product.category].push({
+      name: product.name,
+      description: product.description || 'Heerlijk huisgemaakt product.',
+      price: `€${product.price.toFixed(2)}`,
+      image: product.image_url || "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    });
+    return acc;
+  }, {} as Record<string, Array<{name: string, description: string, price: string, image: string}>>);
 
   const ProductCard = ({ product }: { product: { name: string; description: string; price: string; image: string } }) => (
     <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
@@ -153,46 +70,52 @@ const Assortiment = () => {
         </div>
 
         {/* Brood Section */}
-        <section className="mb-20">
-          <div className="flex items-center justify-center mb-12">
-            <div className="text-center">
-              <h2 className="text-4xl font-bold text-bakery-brown">Brood</h2>
+        {groupedProducts.brood && (
+          <section className="mb-20">
+            <div className="flex items-center justify-center mb-12">
+              <div className="text-center">
+                <h2 className="text-4xl font-bold text-bakery-brown">Brood</h2>
+              </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.brood?.map((product: any, index: number) => (
-              <ProductCard key={index} product={product} />
-            ))}
-          </div>
-        </section>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {groupedProducts.brood.map((product, index) => (
+                <ProductCard key={index} product={product} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Taarten Section */}
-        <section className="mb-20">
-          <div className="flex items-center justify-center mb-12">
-            <div className="text-center">
-              <h2 className="text-4xl font-bold text-bakery-brown">Taarten</h2>
+        {groupedProducts.taarten && (
+          <section className="mb-20">
+            <div className="flex items-center justify-center mb-12">
+              <div className="text-center">
+                <h2 className="text-4xl font-bold text-bakery-brown">Taarten</h2>
+              </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.taarten?.map((product: any, index: number) => (
-              <ProductCard key={index} product={product} />
-            ))}
-          </div>
-        </section>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {groupedProducts.taarten.map((product, index) => (
+                <ProductCard key={index} product={product} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Gebak Section */}
-        <section className="mb-20">
-          <div className="flex items-center justify-center mb-12">
-            <div className="text-center">
-              <h2 className="text-4xl font-bold text-bakery-brown">Gebak & Koekjes</h2>
+        {groupedProducts.gebak && (
+          <section className="mb-20">
+            <div className="flex items-center justify-center mb-12">
+              <div className="text-center">
+                <h2 className="text-4xl font-bold text-bakery-brown">Gebak & Koekjes</h2>
+              </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.gebak?.map((product: any, index: number) => (
-              <ProductCard key={index} product={product} />
-            ))}
-          </div>
-        </section>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {groupedProducts.gebak.map((product, index) => (
+                <ProductCard key={index} product={product} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Call to Action */}
         <div className="bg-bakery-light-cream rounded-3xl p-12 text-center">
