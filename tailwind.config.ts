@@ -63,13 +63,12 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				modern: {
-					primary: '#1a1a1a',
-					secondary: '#f5f5f5',
-					accent: '#3b82f6',
-					text: '#374151',
-					'text-light': '#6b7280',
-					border: '#e5e7eb'
+				bakery: {
+					cream: '#fef7ed',
+					brown: '#8b4513',
+					gold: '#fbbf24',
+					'warm-brown': '#a0522d',
+					'light-cream': '#fffbf7'
 				}
 			},
 			borderRadius: {
