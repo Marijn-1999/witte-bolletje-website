@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Navigation from './Navigation';
 
 interface LayoutProps {
@@ -12,16 +11,11 @@ const Layout = ({ children }: LayoutProps) => {
     <div className="min-h-screen bg-white">
       <Navigation />
       <main className="min-h-screen">{children}</main>
-      <footer className="bg-bakery-brown text-white py-12 mt-16">
+      <footer className="bg-modern-primary text-white py-12 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-bakery-gold rounded-full flex items-center justify-center">
-                  <span className="text-bakery-brown font-bold text-lg">🥖</span>
-                </div>
-                <h3 className="text-xl font-bold">Het Witte Bolletje</h3>
-              </div>
+              <h3 className="text-xl font-bold mb-4">Het Witte Bolletje</h3>
               <p className="text-sm opacity-90 leading-relaxed">
                 Verse bakkerij producten sinds 1985. 
                 Elke dag vers gebakken met liefde en vakmanschap.
@@ -48,16 +42,10 @@ const Layout = ({ children }: LayoutProps) => {
             </div>
           </div>
           
-          <div className="border-t border-bakery-warm-brown mt-8 pt-8 text-center">
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center">
             <p className="text-sm opacity-75">
               © 2024 Het Witte Bolletje. Alle rechten voorbehouden.
             </p>
-            <Link 
-              to="/admin" 
-              className="text-xs opacity-50 hover:opacity-75 transition-opacity mt-2 inline-block"
-            >
-              Admin
-            </Link>
           </div>
         </div>
       </footer>
